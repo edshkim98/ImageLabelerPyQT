@@ -7,6 +7,7 @@ from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtCore import Qt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+import matplotlib.patches as patches
 
 class ImageLabeler(QMainWindow):
     def __init__(self):
@@ -18,7 +19,7 @@ class ImageLabeler(QMainWindow):
 
     def initUI(self):
         self.setWindowTitle("Image Labeler")
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(100, 100, 700, 600)
         self.setStyleSheet("""
             QMainWindow {background-color: #ECF0F1;}
             QPushButton { 
@@ -109,9 +110,15 @@ class ImageLabeler(QMainWindow):
 
             # Display images using Matplotlib
             self.ax1.imshow(gt_image, cmap='gray')
+            # Create a rectangle patch to highlight the center of the image of size 16x16
+            rect = patches.Rectangle((gt_image.shape[1]//2 - 8, gt_image.shape[0]//2 - 8), 16, 16, linewidth=2, edgecolor='r', facecolor='none')
+            self.ax1.add_patch(rect)
             self.ax1.set_title('Ground Truth')
             self.ax1.axis('off')
             self.ax2.imshow(pred_image, cmap='gray')
+            # Create a rectangle patch to highlight the center of the image of size 16x16
+            rect = patches.Rectangle((pred_image.shape[1]//2 - 8, pred_image.shape[0]//2 - 8), 16, 16, linewidth=2, edgecolor='r', facecolor='none')
+            self.ax2.add_patch(rect)
             self.ax2.set_title('Predicted')
             self.ax2.axis('off')
 
